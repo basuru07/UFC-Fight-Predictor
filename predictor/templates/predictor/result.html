@@ -1,0 +1,47 @@
+<!-- predictor/templates/predictor/result.html -->
+{% extends 'predictor/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Prediction Result</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5 text-center">
+                <div class="card {% if prediction.predicted_winner == 'Red' %}bg-danger text-white{% else %}bg-light{% endif %}">
+                    <div class="card-body">
+                        <h4>{{ red_fighter.name }}</h4>
+                        <p>Wins: {{ red_fighter.wins }} | Losses: {{ red_fighter.losses }}</p>
+                        <p>Win Streak: {{ red_fighter.win_streak }}</p>
+                        <p>Odds: {{ prediction.red_odds }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
+                <h2>VS</h2>
+            </div>
+            <div class="col-md-5 text-center">
+                <div class="card {% if prediction.predicted_winner == 'Blue' %}bg-primary text-white{% else %}bg-light{% endif %}">
+                    <div class="card-body">
+                        <h4>{{ blue_fighter.name }}</h4>
+                        <p>Wins: {{ blue_fighter.wins }} | Losses: {{ blue_fighter.losses }}</p>
+                        <p>Win Streak: {{ blue_fighter.win_streak }}</p>
+                        <p>Odds: {{ prediction.blue_odds }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <h3>Predicted Winner: 
+                <span class="{% if prediction.predicted_winner == 'Red' %}text-danger{% else %}text-primary{% endif %}">
+                    {{ prediction.predicted_winner }} Fighter ({{ prediction.predicted_winner|lower }} == 'Red' ? {{ red_fighter.name }} : {{ blue_fighter.name }})
+                </span>
+            </h3>
+            <h4>Confidence: {{ prediction.prediction_confidence|floatformat:2 }}</h4>
+            <a href="{% url 'home' %}" class="btn btn-primary mt-3">Make Another Prediction</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

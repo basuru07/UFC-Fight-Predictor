@@ -1,0 +1,155 @@
+<!-- predictor/templates/predictor/home.html -->
+{% extends 'predictor/base.html' %}
+
+
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Make a Prediction</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'make_prediction' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Red Fighter</label>
+                        {{ prediction_form.red_fighter }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Blue Fighter</label>
+                        {{ prediction_form.blue_fighter }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Red Odds</label>
+                        {{ prediction_form.red_odds }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Blue Odds</label>
+                        {{ prediction_form.blue_odds }}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Predict Winner</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Add New Fighter</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'add_fighter' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        {{ fighter_form.name }}
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Wins</label>
+                            {{ fighter_form.wins }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Losses</label>
+                            {{ fighter_form.losses }}
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <label class="form-label">Win Streak</label>
+                            {{ fighter_form.win_streak }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Lose Streak</label>
+                            {{ fighter_form.lose_streak }}
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label class="form-label">Avg. Sig. Strikes Landed</label>
+                        {{ fighter_form.avg_sig_strikes_landed }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Avg. Sig. Strikes %</label>
+                        {{ fighter_form.avg_sig_strikes_pct }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Avg. Takedowns Landed</label>
+                        {{ fighter_form.avg_takedowns_landed }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Avg. Takedown %</label>
+                        {{ fighter_form.avg_takedown_pct }}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Add Fighter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Recent Predictions</h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Red Fighter</th>
+                                <th>Blue Fighter</th>
+                                <th>Predicted Winner</th>
+                                <th>Confidence</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prediction in recent_predictions %}
+                            <tr>
+                                <td>{{ prediction.red_fighter.name }}</td>
+                                <td>{{ prediction.blue_fighter.name }}</td>
+                                <td>
+                                    <span class="{% if prediction.predicted_winner == 'Red' %}text-danger{% else %}text-primary{% endif %}">
+                                        {{ prediction.predicted_winner }}
+                                    </span>
+                                </td>
+                                <td>
+  <div class="progress">
+    <div 
+      class="progress-bar {% if prediction.predicted_winner == 'Red' %}bg-danger{% else %}bg-primary{% endif %} progress-bar-width-{{ prediction.prediction_confidence|floatformat:'0' }}"
+      role="progressbar"
+      aria-valuenow="{{ prediction.prediction_confidence|floatformat:'2' }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      {{ prediction.prediction_confidence|floatformat:'2' }}%
+    </div>
+  </div>
+</td>
+
+                                  
+                                  
+                                <td>{{ prediction.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4">No predictions yet</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
