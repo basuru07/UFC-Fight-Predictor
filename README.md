@@ -2,6 +2,8 @@
 
 A machine learning-powered web application to predict UFC fight outcomes using historical data and betting odds.
 
+**Live Website:** [UFC Fight Predictor](https://basuru.pythonanywhere.com/)
+
 ## 🔍 Overview
 
 UFC Fight Predictor uses machine learning algorithms to forecast match results based on comprehensive fighter statistics, historical performance, and betting market data. The application helps MMA enthusiasts and bettors make more informed decisions by analyzing patterns across thousands of professional fights.
@@ -23,6 +25,7 @@ UFC Fight Predictor uses machine learning algorithms to forecast match results b
 - **Backend**: Django (Python)
 - **Frontend**: HTML/CSS with Bootstrap
 - **Data Processing**: Pandas for preprocessing (imputation, undersampling)
+- **Hosting**: PythonAnywhere
 
 ## 📊 Model Performance
 
@@ -84,3 +87,4 @@ python manage.py runserver
 
 For details on the dataset and model training process, visit:
 [Octagon Oracle](https://github.com/0xPsyop/Octagon-Oracle)
+
